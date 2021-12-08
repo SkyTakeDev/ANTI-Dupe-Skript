@@ -1,0 +1,51 @@
+Options:
+	Ban List: bedrock, or barriers, or east conditional command block, or command block, or command
+	Extra Inventory Check: true
+	Item Removed Message: &c&lITEMSUCHT &8» &cDieses Item ist verboten! &7(&a%event-item%&7)
+
+
+
+#--------------------------------------------------------------------------------------------------------
+
+
+
+on load:
+	set {banneditems::*} to {@Ban List}
+
+on right click on chest or trapped chest or hopper:
+    loop all items in clicked block:
+        if {banneditems::*} contains loop-item:	
+            add "&7Spieler: &a%player% &7Koordinaten: &f%location of clicked block% &7Safe: &a%clicked block% &7Server: &a%player's world% &6--------------------------------" to {%player%.tch::*} 
+
+command /dupe:
+  permission: dupe.use
+  permission message: &c&lITEMSUCHT &8» &7Dazu hast du keine Berechtigung!
+  aliases: dupo
+  trigger:
+    send "&c&lITEMSUCHT &8» &bDUPE-Einträge:" to player
+    send "&6--------------------------------" to player
+    send "%{%player%.tch::*}%" to player
+
+command /removedupe:
+  permission: duperemove.use
+  permission message: &c&lITEMSUCHT &8» &7Dazu hast du keine Berechtigung!
+  trigger:
+    delete {%player%.tch::*}
+    send "&c&lITEMSUCHT &8» &7Alle DUPE-Einträge wurden gelöscht!" to player
+
+on rightclick with barrier:
+	loop all blocks in radius 100 around event-block:
+		if loop-block is chest or trapped chest or hopper:
+			loop all items in loop-block:
+				if {banneditems::*} contains loop-item:
+					add "&7Spieler: &a%player% &7Koordinaten: &f%location of loop-block% &7Safe: &a%loop-block% &7Server: &a%player's world% &6--------------------------------" to {%player%.tch::*}
+   
+
+
+			
+
+
+
+
+
+		
